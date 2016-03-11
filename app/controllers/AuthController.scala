@@ -23,15 +23,16 @@ class AuthController @Inject()(userDao: UserDAO,
       "password" -> nonEmptyText
     )(User.apply)(User.unapply))
 
-  def inputUserInfo = Action.async {
+  def inputUserInfo = Action.async { implicit request =>
+    println(request.session)
     Future.successful(Ok(views.html.createUser(userForm)))
   }
 
-  def insertUser = Action.async { implicit request =>
+  def insertUser = Action.async { implicit request =>    
     userForm.bindFromRequest.fold(
       error => Future.successful(BadRequest(views.html.createUser(error))),
       user => userDao.create(user).map(_ =>
-        Redirect(routes.HomeController.index)
+        Redirect(routes.HomeController.index)//.withCookies(Cookie("theme", "blue")).withSession(request.session + ("login" -> user.name))
       )
     )
   }
