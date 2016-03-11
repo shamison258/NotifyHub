@@ -21,10 +21,10 @@ class UserDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
   def findById(id: Long):Future[Option[User]] = db.run(users.filter(_.id === id).result.headOption)
 
-  def list: Future[Seq[User]] = db.run(users.result)
+  def all: Future[Seq[User]] = db.run(users.result)
 
   private class UsersTable(tag: Tag) extends Table[User](tag, "USER")  {
-    def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
+    def id = column[Option[Long]]("ID", O.PrimaryKey, O.AutoInc)
     def email = column[String]("EMAIL")
     def emailConfirmed = column[Boolean]("EMAIL_CONFIRMED")
     def name = column[String]("NAME")

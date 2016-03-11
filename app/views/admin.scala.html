@@ -1,8 +1,16 @@
-@(message: String)
+@(message: String, users: Seq[User])
 
 @* コメント *@
 
 @main("admin") {
   <h1>ADMIN:</h1>
   <p>Message: @message</p>
+  <h2>Users:</h2>
+  @for(u <- users){
+    <p>ID: @u.id</p>
+    <p>Name: @u.name</p>
+    <p>Email: @u.email</p>
+    <p>EmailConfirmed: @u.emailConfirmed</p>
+    <p>Password(Hashed): @u.password</p>
+  }
 }

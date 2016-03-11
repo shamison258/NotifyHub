@@ -16,7 +16,8 @@ class HomeController @Inject() (val userDao: UserDAO) extends Controller {
   }
 
   def admin = Action.async {
-    Future.successful(Ok(views.html.admin("This is Admin Page. Check All Info")))
+    val msg = "This is Admin Page. Check All Info"
+    userDao.all.map(users => Ok(views.html.admin(msg, users)))
   }
 
   def user(id: Long) = Action.async {

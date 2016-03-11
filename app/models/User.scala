@@ -1,9 +1,8 @@
 package models
 
 case class User(
-  id: Long,
+  id: Option[Long],
   email: String,
   emailConfirmed: Boolean,
   name: String,
-  password: String
-)
+  password: String)
