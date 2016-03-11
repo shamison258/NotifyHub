@@ -1,0 +1,21 @@
+@(message: String, user: Option[User])
+
+@* コメント *@
+
+
+
+@main("user") {
+  <h1>USER:</h1>
+  @if(!user.isEmpty){
+    <p>Message: @message</p>
+    @defining(user.get) { u =>
+        <p>ID: @u.id</p>
+        <p>Name: @u.name</p>
+        <p>Email: @u.email</p>
+        <p>EmailConfirmed: @u.emailConfirmed</p>
+        <p>Password(Hashed): @u.password</p>
+    }
+  } else {
+    <p>The user doesn't exist.</p>
+  }
+}
