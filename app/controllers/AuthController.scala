@@ -1,46 +1,75 @@
 package controllers
 
 import javax.inject._
-import play.api._
+
+import config.AuthConfigImpl
 import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n._
+
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 import dao._
+import jp.t2v.lab.play2.auth.LoginLogout
 import models._
 
-class AuthController @Inject()(userDao: UserDAO,
-  val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
-  val userForm = Form(
+case class LoginForm(emailOrName: String, password: String)
+
+class AuthController @Inject()(val accountDAO: AccountDAO,
+  val messagesApi: MessagesApi) extends Controller
+  with I18nSupport with AuthConfigImpl with LoginLogout {
+
+  val signUpForm = Form(
     mapping(
       "id" -> optional(longNumber),
+      "role" -> ignored(Role.valueOf("Common")),
       "email" -> email,
       "emailConfirmed" -> ignored(false),
       "name" -> nonEmptyText,
       "password" -> nonEmptyText
-    )(User.apply)(User.unapply))
+    )(Account.apply)(Account.unapply))
 
-  def inputUserInfo = Action.async { implicit request =>
-    println(request.session)
-    Future.successful(Ok(views.html.createUser(userForm)))
+  def signUp = Action.async { implicit request =>
+    Future.successful(Ok(views.html.signup(signUpForm)))
   }
 
-  def insertUser = Action.async { implicit request =>    
-    userForm.bindFromRequest.fold(
-      error => Future.successful(BadRequest(views.html.createUser(error))),
-      user => userDao.create(user).map(_ =>
-        Redirect(routes.HomeController.index)//.withCookies(Cookie("theme", "blue")).withSession(request.session + ("login" -> user.name))
+  def createAccount = Action.async { implicit request =>
+    signUpForm.bindFromRequest.fold(
+      error => {
+        println("error")
+        Future.successful(BadRequest(views.html.signup(error)))
+      },
+      account => accountDAO.create(account).map(_ =>
+        Redirect(routes.HomeController.index())
       )
     )
   }
 
-  def login = TODO
+  val loginForm = Form(
+    mapping(
+      "emailOrName" -> nonEmptyText,
+      "password" -> nonEmptyText
+    )(LoginForm.apply)(LoginForm.unapply))
 
-  def logout = TODO
+  def login = Action.async { implicit request =>
+    Future.successful(Ok(views.html.login(loginForm)))
+  }
 
-  def deleteUser = TODO
+  def authenticate = Action.async { implicit request =>
+    loginForm.bindFromRequest.fold(
+      formWithErrors => Future.successful(BadRequest(views.html.login(formWithErrors))),
+      form => accountDAO.authenticate(form.emailOrName, form.password)
+        .flatMap(account => gotoLoginSucceeded(account.get.id.get))
+    )
+  }
+
+  def logout = Action.async { implicit request =>
+    gotoLogoutSucceeded
+  }
+
+  def deleteAccount = TODO
+
 
 }

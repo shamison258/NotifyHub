@@ -1,4 +1,4 @@
-@(message: String, users: Seq[User])
+@(message: String, accounts: Seq[Account])(implicit loginAccount: Account)
 
 @* コメント *@
 
@@ -6,11 +6,11 @@
   <h1>ADMIN:</h1>
   <p>Message: @message</p>
   <h2>Users:</h2>
-  @for(u <- users){
-    <p>ID: @u.id</p>
-    <p>Name: @u.name</p>
-    <p>Email: @u.email</p>
-    <p>EmailConfirmed: @u.emailConfirmed</p>
-    <p>Password(Hashed): @u.password</p>
+  @for(a <- accounts){
+    <p>ID: @a.id</p>
+    <p>Name: @a.name</p>
+    <p>Email: @a.email</p>
+    <p>EmailConfirmed: @a.emailConfirmed</p>
+    <p>Password(Hashed): @a.password</p>
   }
-}
+}(loginAccount)

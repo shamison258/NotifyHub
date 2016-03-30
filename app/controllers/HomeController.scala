@@ -1,27 +1,30 @@
 package controllers
 
 import javax.inject._
-import play.api._
+
+import config.AuthConfigImpl
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util._
-import scala.concurrent._
 import dao._
+import jp.t2v.lab.play2.auth.{AuthElement, OptionalAuthElement}
+import models.Role.{Admin, Common}
 
 @Singleton
-class HomeController @Inject() (val userDao: UserDAO) extends Controller {
-  def index = Action.async {
-    Future.successful(Ok(views.html.index("Hello! This is  Index Page !!")))
+class HomeController @Inject() (val accountDAO: AccountDAO)
+  extends Controller with OptionalAuthElement with AuthConfigImpl {
+  def index = StackAction { implicit request =>
+    Ok(views.html.index("Hello! This is  Index Page !!")(loggedIn.getOrElse(null)))
   }
 
-  def admin = Action.async {
+  def admin = AsyncStack { implicit request =>
     val msg = "This is Admin Page. Check All Info"
-    userDao.all.map(users => Ok(views.html.admin(msg, users)))
+    accountDAO.all.map(users => Ok(views.html.admin(msg, users)(loggedIn.get)))
   }
 
-  def user(id: Long) = Action.async {
+
+  def account(id: Long) = AsyncStack { implicit request =>
     val msg = "This is User Page. Check User Info"
-    userDao.findById(id).map(user => Ok(views.html.user(msg, user)))
+    accountDAO.findById(id).map(user => Ok(views.html.user(msg, user)))
   }
 }

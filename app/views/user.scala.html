@@ -1,4 +1,4 @@
-@(message: String, user: Option[User])
+@(message: String, account: Option[Account])
 
 @* コメント *@
 
@@ -6,14 +6,14 @@
 
 @main("user") {
   <h1>USER:</h1>
-  @if(!user.isEmpty){
+  @if(!account.isEmpty){
     <p>Message: @message</p>
-    @defining(user.get) { u =>
-        <p>ID: @u.id</p>
-        <p>Name: @u.name</p>
-        <p>Email: @u.email</p>
-        <p>EmailConfirmed: @u.emailConfirmed</p>
-        <p>Password(Hashed): @u.password</p>
+    @defining(account.get) { a =>
+        <p>ID: @a.id</p>
+        <p>Name: @a.name</p>
+        <p>Email: @a.email</p>
+        <p>EmailConfirmed: @a.emailConfirmed</p>
+        <p>Password(Hashed): @a.password</p>
     }
   } else {
     <p>The user doesn't exist.</p>

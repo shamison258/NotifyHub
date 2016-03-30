@@ -1,0 +1,16 @@
+@(loginForm: Form[LoginForm])(implicit messages: Messages)
+
+@import helper._
+
+@main("Login") {
+  <h1>Create User</h1>
+  @form(routes.AuthController.authenticate) {
+    <fieldset>
+      @inputText(loginForm("emailOrName"), '_label -> "emailOrName")
+      @inputText(loginForm("password"), '_label -> "password")
+    </fieldset>
+    <div class="actions">
+      <input type="submit" value="Create this computer" class="btn primary">
+    </div>
+  }
+}

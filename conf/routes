@@ -3,13 +3,17 @@
 # HomeController
 GET   /                         controllers.HomeController.index
 GET   /admin                    controllers.HomeController.admin
-GET   /user/:id                 controllers.HomeController.user(id: Long)
+GET   /account/:id                 controllers.HomeController.account(id: Long)
 
 # AuthController
-GET   /createUser               controllers.AuthController.inputUserInfo
-POST  /createUser               controllers.AuthController.insertUser
-GET   /deleteUser               controllers.AuthController.deleteUser
+GET   /signup                   controllers.AuthController.signUp
+POST  /signup                   controllers.AuthController.createAccount
+
+GET   /deleteAccount               controllers.AuthController.deleteAccount
+
 GET   /login                    controllers.AuthController.login
+POST  /login                    controllers.AuthController.authenticate
+
 GET   /logout                   controllers.AuthController.logout
 
 # Map static resources from the /public folder to the /assets URL path

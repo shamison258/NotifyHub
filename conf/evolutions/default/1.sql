@@ -1,8 +1,9 @@
 
 # --- !Ups
 
-create table USER (
+create table ACCOUNT (
   ID BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  ROLE VARCHAR NOT NULL,
   EMAIL VARCHAR NOT NULL,
   EMAIL_CONFIRMED BOOLEAN NOT NULL,
   NAME VARCHAR NOT NULL,
@@ -11,4 +12,4 @@ create table USER (
 
 # --- !Downs
 
-drop table USER;
+drop table ACCOUNT;
