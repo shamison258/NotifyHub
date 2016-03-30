@@ -3,22 +3,22 @@ package controllers
 import javax.inject._
 
 import config.AuthConfigImpl
-import play.api.mvc._
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.i18n._
-
-import scala.concurrent._
-import scala.concurrent.ExecutionContext.Implicits.global
 import dao._
 import jp.t2v.lab.play2.auth.LoginLogout
 import models._
+import play.api.data.Form
+import play.api.data.Forms._
+import play.api.i18n._
+import play.api.mvc._
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent._
 
 
 case class LoginForm(emailOrName: String, password: String)
 
 class AuthController @Inject()(val accountDAO: AccountDAO,
-  val messagesApi: MessagesApi) extends Controller
+                               val messagesApi: MessagesApi) extends Controller
   with I18nSupport with AuthConfigImpl with LoginLogout {
 
   val signUpForm = Form(
@@ -30,6 +30,11 @@ class AuthController @Inject()(val accountDAO: AccountDAO,
       "name" -> nonEmptyText,
       "password" -> nonEmptyText
     )(Account.apply)(Account.unapply))
+  val loginForm = Form(
+    mapping(
+      "emailOrName" -> nonEmptyText,
+      "password" -> nonEmptyText
+    )(LoginForm.apply)(LoginForm.unapply))
 
   def signUp = Action.async { implicit request =>
     Future.successful(Ok(views.html.signup(signUpForm)))
@@ -46,12 +51,6 @@ class AuthController @Inject()(val accountDAO: AccountDAO,
       )
     )
   }
-
-  val loginForm = Form(
-    mapping(
-      "emailOrName" -> nonEmptyText,
-      "password" -> nonEmptyText
-    )(LoginForm.apply)(LoginForm.unapply))
 
   def login = Action.async { implicit request =>
     Future.successful(Ok(views.html.login(loginForm)))

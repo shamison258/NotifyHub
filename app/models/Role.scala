@@ -4,9 +4,6 @@ sealed trait Role
 
 object Role {
 
-  case object Admin extends Role
-  case object Common extends Role
-
   def valueOf(value: String): Role = value match {
     case "Admin" => Admin
     case "Common" => Common
@@ -18,5 +15,9 @@ object Role {
     case Common => "Common"
     case _ => throw new IllegalArgumentException()
   }
+
+  case object Admin extends Role
+
+  case object Common extends Role
 
 }

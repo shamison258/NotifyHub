@@ -1,17 +1,17 @@
 @(accountForm: Form[Account])(implicit messages: Messages)
 
-@import helper._
+  @import helper._
 
-@main("Create User") {
-  <h1>Create User</h1>
-  @form(routes.AuthController.createAccount) {
-    <fieldset>       
-      @inputText(accountForm("email"), '_label -> "email")
-      @inputText(accountForm("name"), '_label -> "name")
-      @inputText(accountForm("password"), '_label -> "password")
-    </fieldset>        
-    <div class="actions">
-      <input type="submit" value="Create" class="btn">
-    </div>
+  @main("Create User") {
+    <h1>Create User</h1>
+    @form(routes.AuthController.createAccount) {
+      <fieldset>
+        @inputText(accountForm("email"), '_label -> "email")
+        @inputText(accountForm("name"), '_label -> "name")
+        @inputText(accountForm("password"), '_label -> "password")
+      </fieldset>
+      <div class="actions">
+        <input type="submit" value="Create" class="btn">
+      </div>
+    }
   }
-}
