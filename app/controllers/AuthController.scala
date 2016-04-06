@@ -42,12 +42,11 @@ class AuthController @Inject()(val accountDAO: AccountDAO,
 
   def createAccount = Action.async { implicit request =>
     signUpForm.bindFromRequest.fold(
-      error => {
-        println("error")
+      error => (
         Future.successful(BadRequest(views.html.signup(error)))
-      },
+      ),
       account => accountDAO.create(account).map(_ =>
-        Redirect(routes.HomeController.index())
+        Redirect(controllers.nonauth.routes.HomeController.index())
       )
     )
   }

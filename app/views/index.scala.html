@@ -1,8 +1,8 @@
-@(message: String)(implicit loginAccount: Account)
+@(message: String)(implicit loginAccount: Option[Account])
   @* コメント *@
-  @main("index") {
-    <h1>INDEX:</h1>
-    <p>Message: @message</p>
-    <p>Create User Accout, check <a href="/signup">create user</a></p>
-    <p>if you are administrator, check <a href="/admin">ADMIN</a></p>
-  }(loginAccount)
+@main("index") {
+  <h1>INDEX:</h1>
+  <p>Message: @message</p>
+  <p>Create User Accout, check <a href="/signup">create user</a></p>
+  <p>if you are administrator, check <a href="/admin">ADMIN</a></p>
+}(loginAccount)

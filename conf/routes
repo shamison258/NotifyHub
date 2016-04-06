@@ -1,9 +1,11 @@
 # Routes
 
-# HomeController
-GET   /                         controllers.HomeController.index
-GET   /admin                    controllers.HomeController.admin
-GET   /account/:id                 controllers.HomeController.account(id: Long)
+# nonauth.HomeController
+GET   /                         controllers.nonauth.HomeController.index
+
+# AccountController
+GET   /admin                    controllers.AccountController.admin
+GET   /account/:id              controllers.AccountController.account(id: Long)
 
 # AuthController
 GET   /signup                   controllers.AuthController.signUp
@@ -18,5 +20,3 @@ GET   /logout                   controllers.AuthController.logout
 
 # Map static resources from the /public folder to the /assets URL path
 GET   /assets/*file             controllers.Assets.versioned(path="/public", file: Asset)
-
-

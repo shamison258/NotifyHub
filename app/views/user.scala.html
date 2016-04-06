@@ -1,17 +1,17 @@
 @(message: String, account: Option[Account])
   @* コメント *@
-  @main("user") {
-    <h1>USER:</h1>
-    @if(!account.isEmpty) {
-      <p>Message: @message</p>
-      @defining(account.get) { a =>
-        <p>ID: @a.id</p>
-        <p>Name: @a.name</p>
-        <p>Email: @a.email</p>
-        <p>EmailConfirmed: @a.emailConfirmed</p>
-        <p>Password(Hashed): @a.password</p>
-      }
-    } else {
-      <p>The user doesn't exist.</p>
+@main("user") {
+  <h1>USER:</h1>
+  @if(account.nonEmpty) {
+    <p>Message: @message</p>
+    @defining(account.get) { a =>
+      <p>ID: @a.id</p>
+      <p>Name: @a.name</p>
+      <p>Email: @a.email</p>
+      <p>EmailConfirmed: @a.emailConfirmed</p>
+      <p>Password(Hashed): @a.password</p>
     }
+  } else {
+    <p>The user doesn't exist.</p>
   }
+}

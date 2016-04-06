@@ -1,4 +1,4 @@
-@(message: String, accounts: Seq[Account])(implicit loginAccount: Account)
+@(message: String, accounts: Seq[Account])(implicit loginAccount: Option[Account])
   @* コメント *@
   @main("admin") {
     <h1>ADMIN:</h1>

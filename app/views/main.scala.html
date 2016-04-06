@@ -1,43 +1,46 @@
-@(title: String)(content: Html)(implicit loginAccount: Account = null)
+@(title: String)(content: Html)(implicit loginAccount: Option[Account] = None)
 
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    @* Here's where we render the page title `String`. *@
-  <title>@title</title>
-  <link rel="stylesheet"
-  media="screen"
-  href="@routes.Assets.versioned("stylesheets/main.css")">
-  <link rel="stylesheet"
-  href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")">
+<head>
+  @* Here's where we render the page title `String`. *@
+<title>@title</title>
+<link rel="stylesheet"
+      media="screen"
+      href="@routes.Assets.versioned("stylesheets/main.css")">
+<link rel="stylesheet"
+      href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")">
 
-  <link rel="shortcut icon"
-  type="image/png"
-  href="@routes.Assets.versioned("images/favicon.png")">
+<link rel="shortcut icon"
+      type="image/png"
+      href="@routes.Assets.versioned("images/favicon.png")">
 
-  <script src="@routes.Assets.versioned("javascripts/hello.js")"
-  type="text/javascript"></script>
-  <script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")"
-  type="text/javascript"></script>
-  </head>
-  <body>
-    <nav class="navbar navbar-default">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand">NotifyHub</a>
-        </div>
-        <ul class="nav navbar-nav">
-          <li><a href="/">Index</a></li>
-          <li><a href="/signup">Sign Up</a></li>
-          <li><a href="/login">Login</a></li>
-          @if(loginAccount != null) {
-            <a class="navbar-brand">@loginAccount.name</a>
-          }
-        </ul>
-      </div>
-    </nav>
-    <div class="container">
-    @content
+<script src="@routes.Assets.versioned("javascripts/hello.js")"
+        type="text/javascript"></script>
+<script src="@routes.Assets.versioned("javascripts/bootstrap.min.js")"
+        type="text/javascript"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand">NotifyHub</a>
     </div>
-  </body>
+    <ul class="nav navbar-nav">
+      <li><a href="/">Index</a></li>
+      <li><a href="/signup">Sign Up</a></li>
+      <li><a href="/login">Login</a></li>
+      @if(loginAccount.nonEmpty) {
+        @defining(loginAccount.get) { a =>
+          <li><a href="/account/@a.id">@a.name</a></li>
+        }
+      }
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  @content
+</div>
+</body>
 </html>
